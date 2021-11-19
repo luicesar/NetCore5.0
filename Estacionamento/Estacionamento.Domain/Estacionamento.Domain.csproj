@@ -4,4 +4,14 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+ <ItemGroup>
+    <PackageReference Include="Flunt" Version="1.0.3" />
+    <PackageReference Include="AutoMapper" Version="7.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="4.0.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Estacionamento.Shared\Estacionamento.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

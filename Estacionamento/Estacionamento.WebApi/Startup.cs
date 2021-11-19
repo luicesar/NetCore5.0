@@ -6,35 +6,49 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Estacionamento.Repository.DataContext;
+using Estacionamento.Repository.Interfaces;
+using Estacionamento.Repository.Repositorys;
+using Estacionamento.Application.Interfaces;
+using Estacionamento.Application.Services;
+using AutoMapper;
+// using Estacionamento.WebApi.Auth;
 
 namespace Estacionamento.WebApi
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<EstacionamentoDataContext>(options => options.UseSqlServer(_configuration.GetConnectionString("database")));
             services.AddControllers();
+            services.AddHttpClient();
+
+            services.AddAutoMapper ();
+            this._ConfigureInjectionDependecy (services);
+
+            // services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Estacionamento.WebApi", Version = "v1" });
             });
+
+            services.AddCors ();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -54,6 +68,17 @@ namespace Estacionamento.WebApi
             {
                 endpoints.MapControllers();
             });
+        }
+        
+        private void _ConfigureInjectionDependecy (IServiceCollection services) {
+                services
+                    .AddScoped<ICarroRepository, CarroRepository> ()
+                    .AddScoped<IPessoaRepository, PessoaRepository> ()
+                    .AddScoped<IManobristaRepository, ManobristaRepository> ()
+
+                    .AddScoped<ICarroService, CarroService> ()
+                    .AddScoped<IPessoaService, PessoaService> ()
+                    .AddScoped<IManobristaService, ManobristaService> ();
         }
     }
 }
