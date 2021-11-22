@@ -11,8 +11,8 @@ using Estacionamento.Application.Interfaces;
 using Estacionamento.WebApi.Auth;
 
 namespace Estacionamento.WebApi.Controllers {
- //[Authorize ("Bearer"), Route ("api/[controller]")]
-    [Route ("api/[controller]")]
+ [Authorize ("Bearer"), Route ("api/[controller]")]
+    // [Route ("api/[controller]")]
     public class PessoaController : ControllerBase<PessoaDomain, PessoaViewModel> {
         private readonly IPessoaService Service;
         public PessoaController (IPessoaService service) : base (service) {

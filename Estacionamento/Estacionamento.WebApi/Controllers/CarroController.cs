@@ -11,8 +11,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Estacionamento.WebApi.Controllers {
-    //[Authorize ("Bearer"), Route ("api/[controller]")]
-    [Route ("api/[controller]")]
+    [Authorize ("Bearer"), Route ("api/[controller]")]
+    // [Route ("api/[controller]")]
     public class CarroController : ControllerBase<CarroDomain, CarroViewModel> {
         private readonly ICarroService Service;
         public CarroController (ICarroService service) : base (service) {

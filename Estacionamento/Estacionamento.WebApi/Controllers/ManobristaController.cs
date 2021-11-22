@@ -11,8 +11,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Estacionamento.WebApi.Controllers {
-    //[Authorize ("Bearer"), Route ("api/[controller]")]
-    [Route ("api/[controller]")]
+    [Authorize ("Bearer"), Route ("api/[controller]")]
+    // [Route ("api/[controller]")]
     public class ManobristaController : ControllerBase<ManobristaDomain, ManobristaViewModel> {
         private readonly IManobristaService Service;
         public ManobristaController (IManobristaService service) : base (service) {
