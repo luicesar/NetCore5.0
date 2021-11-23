@@ -40,9 +40,9 @@ namespace Estacionamento.WebApi
             services.AddAutoMapper ();
             this._ConfigureInjectionDependecy (services);
             this._ConfigureAuth (services);
-            this._ConfigureSwagger(services);
 
             services.AddCors ();
+            this._ConfigureSwagger(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -60,6 +60,10 @@ namespace Estacionamento.WebApi
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseCors(x => x.AllowAnyHeader()
+                              .AllowAnyMethod()
+                              .AllowAnyOrigin());
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -71,7 +75,6 @@ namespace Estacionamento.WebApi
                     .AddScoped<ICarroRepository, CarroRepository> ()
                     .AddScoped<IPessoaRepository, PessoaRepository> ()
                     .AddScoped<IManobristaRepository, ManobristaRepository> ()
-
                     .AddScoped<ICarroService, CarroService> ()
                     .AddScoped<IPessoaService, PessoaService> ()
                     .AddScoped<IManobristaService, ManobristaService> ();
@@ -143,6 +146,9 @@ namespace Estacionamento.WebApi
                                     Type = ReferenceType.SecurityScheme,
                                     Id="Bearer"
                                 },
+                                Scheme = "oauth2",
+                                Name = "Bearer",
+                                In = ParameterLocation.Header
                         },
                         new string[]{}
                     }
